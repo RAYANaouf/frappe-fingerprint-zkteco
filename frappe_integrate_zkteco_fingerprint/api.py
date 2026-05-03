@@ -94,12 +94,12 @@ def auto_checkout_midnight():
    
     from datetime import datetime, timedelta, time as dt_time
  
-    yesterday     = (datetime.now() - timedelta(days=1)).date()
-    day_start     = datetime.combine(yesterday, dt_time(0, 0, 0))    # 00:00:00
-    day_end       = datetime.combine(yesterday, dt_time(23, 59, 59)) # 23:59:59
-    auto_out_time = datetime.combine(yesterday, dt_time(23, 59, 0))  # 23:59:00
+    today = datetime.now().date()
+    day_start     = datetime.combine(today, dt_time(0, 0, 0))    # 00:00:00
+    day_end       = datetime.combine(today, dt_time(23, 59, 59)) # 23:59:59
+    auto_out_time = datetime.combine(today, dt_time(23, 59, 00))  # 23:59:00
  
-    frappe.logger().info(f"[MidnightCheckout] Traitement journée {yesterday}")
+    frappe.logger().info(f"[MidnightCheckout] Traitement journée {today}")
  
     open_ins = frappe.db.sql("""
         SELECT
@@ -121,7 +121,7 @@ def auto_checkout_midnight():
     """, (day_start, day_end, day_end), as_dict=True)
  
     if not open_ins:
-        frappe.logger().info(f"[MidnightCheckout] Aucun IN ouvert pour {yesterday}")
+        frappe.logger().info(f"[MidnightCheckout] Aucun IN ouvert pour {today}")
         return
  
     closed = 0

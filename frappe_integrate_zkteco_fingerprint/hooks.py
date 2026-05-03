@@ -287,8 +287,11 @@ fixtures = [
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
+
 scheduler_events = {
-    "daily": [
-        "frappe_integrate_zkteco_fingerprint.api.auto_checkout_midnight"
-    ]
+    "cron": {
+        "59 23 * * *": [
+            "frappe_integrate_zkteco_fingerprint.api.auto_checkout_midnight"
+        ]
+    }
 }
