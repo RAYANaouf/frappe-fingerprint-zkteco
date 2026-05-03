@@ -88,8 +88,6 @@ def iclock_cdata():
 
     return Response("OK", mimetype="text/plain")
 
-
-
 def auto_checkout_midnight():
    
     from datetime import datetime, timedelta, time as dt_time
