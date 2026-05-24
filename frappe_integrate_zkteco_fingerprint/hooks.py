@@ -290,9 +290,9 @@ fixtures = [
 
 scheduler_events = {
      "cron": {
-        "55 12 * * *": [
-            "frappe_integrate_zkteco_fingerprint.api.auto_checkout_midnight"
+        "55 23 * * *": [
+            "frappe_integrate_zkteco_fingerprint.auto_checkout_midnight"
         ]
      },
-     "daily": ["frappe_integrate_zkteco_fingerprint.api.create_tomorrow_shifts"]
+     "daily": [ "frappe_integrate_zkteco_fingerprint.zkteco_fingerprint.doctype.shift_assignment_rule.shift_assignment_rule.create_tomorrow_shifts"]
 }

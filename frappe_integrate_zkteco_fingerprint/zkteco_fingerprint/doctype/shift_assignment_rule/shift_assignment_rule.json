@@ -1,0 +1,147 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "Format: SAR-{employee}",
+ "creation": "2026-05-23 15:08:40.042934",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "rule_type",
+  "is_active",
+  "section_weekly",
+  "morning_days",
+  "evening_days",
+  "section_monthly",
+  "first_half_shift",
+  "second_half_shift",
+  "section_fixed",
+  "shift_type",
+  "off_days"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "rule_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Rule Type",
+   "options": "\nWeekly Rotation\nMonthly Half\nFixed Shift",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is Active"
+  },
+  {
+   "depends_on": "eval:doc.rule_type == 'Weekly Rotation'",
+   "fieldname": "section_weekly",
+   "fieldtype": "Section Break",
+   "label": "Weekly Rotation Settings"
+  },
+  {
+   "depends_on": "eval:doc.rule_type == 'Weekly Rotation'",
+   "description": "Comma-separated weekday numbers: 0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri, 5=Sat, 6=Sun. Ex: 0,1,3",
+   "fieldname": "morning_days",
+   "fieldtype": "Data",
+   "label": "Morning Shift Days",
+   "mandatory_depends_on": "eval:doc.rule_type == 'Weekly Rotation'"
+  },
+  {
+   "depends_on": "eval:doc.rule_type == 'Weekly Rotation'",
+   "description": "Comma-separated weekday numbers: 0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri, 5=Sat, 6=Sun. Ex: 2,5,6",
+   "fieldname": "evening_days",
+   "fieldtype": "Data",
+   "label": "Evening Shift Days",
+   "mandatory_depends_on": "eval:doc.rule_type == 'Weekly Rotation'"
+  },
+  {
+   "depends_on": "eval:doc.rule_type == 'Monthly Half'",
+   "fieldname": "section_monthly",
+   "fieldtype": "Section Break",
+   "label": "Monthly Half Settings"
+  },
+  {
+   "depends_on": "eval:doc.rule_type == 'Monthly Half'",
+   "description": "Shift assigned from day 1 to 15 of the month",
+   "fieldname": "first_half_shift",
+   "fieldtype": "Link",
+   "label": "First Half Shift (1\u201315)",
+   "mandatory_depends_on": "eval:doc.rule_type == 'Monthly Half'",
+   "options": "Shift Type"
+  },
+  {
+   "depends_on": "eval:doc.rule_type == 'Monthly Half'",
+   "description": "Shift assigned from day 16 to end of month",
+   "fieldname": "second_half_shift",
+   "fieldtype": "Link",
+   "label": "Second Half Shift (16\u201331)",
+   "mandatory_depends_on": "eval:doc.rule_type == 'Monthly Half'",
+   "options": "Shift Type"
+  },
+  {
+   "depends_on": "eval:doc.rule_type == 'Fixed Shift'",
+   "fieldname": "section_fixed",
+   "fieldtype": "Section Break",
+   "label": "Fixed Shift Settings"
+  },
+  {
+   "depends_on": "eval:doc.rule_type == 'Fixed Shift'",
+   "description": "The fixed shift assigned every working day",
+   "fieldname": "shift_type",
+   "fieldtype": "Link",
+   "label": "Shift Type",
+   "mandatory_depends_on": "eval:doc.rule_type == 'Fixed Shift'",
+   "options": "Shift Type"
+  },
+  {
+   "depends_on": "eval:doc.rule_type == 'Fixed Shift'",
+   "description": "Comma-separated weekday numbers to skip. Leave empty for no fixed day off. Ex: 3 (Thursday)",
+   "fieldname": "off_days",
+   "fieldtype": "Data",
+   "label": "Off Days"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-05-24 19:48:01.082953",
+ "modified_by": "Administrator",
+ "module": "zkteco fingerprint",
+ "name": "Shift Assignment Rule",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
