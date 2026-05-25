@@ -10,10 +10,7 @@
   "rule_type",
   "is_active",
   "section_weekly",
-  "morning_days",
-  "morning_shift_type",
-  "evening_days",
-  "evening_shift_type",
+  "weekly_shifts",
   "section_monthly",
   "first_half_shift",
   "second_half_shift",
@@ -54,38 +51,12 @@
    "label": "Weekly Rotation Settings"
   },
   {
+   "fieldname": "weekly_shifts",
+   "fieldtype": "Table",
+   "label": "Weekly Shifts",
+   "options": "Weekly Shift Line",
    "depends_on": "eval:doc.rule_type == 'Weekly Rotation'",
-   "description": "Comma-separated weekday numbers: 0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri, 5=Sat, 6=Sun. Ex: 0,1,3",
-   "fieldname": "morning_days",
-   "fieldtype": "Data",
-   "label": "Morning Shift Days",
    "mandatory_depends_on": "eval:doc.rule_type == 'Weekly Rotation'"
-  },
-  {
-   "depends_on": "eval:doc.rule_type == 'Weekly Rotation'",
-   "description": "Shift type assigned on morning days",
-   "fieldname": "morning_shift_type",
-   "fieldtype": "Link",
-   "label": "Morning Shift Type",
-   "mandatory_depends_on": "eval:doc.rule_type == 'Weekly Rotation'",
-   "options": "Shift Type"
-  },
-  {
-   "depends_on": "eval:doc.rule_type == 'Weekly Rotation'",
-   "description": "Comma-separated weekday numbers: 0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri, 5=Sat, 6=Sun. Ex: 2,5,6",
-   "fieldname": "evening_days",
-   "fieldtype": "Data",
-   "label": "Evening Shift Days",
-   "mandatory_depends_on": "eval:doc.rule_type == 'Weekly Rotation'"
-  },
-  {
-   "depends_on": "eval:doc.rule_type == 'Weekly Rotation'",
-   "description": "Shift type assigned on evening days",
-   "fieldname": "evening_shift_type",
-   "fieldtype": "Link",
-   "label": "Evening Shift Type",
-   "mandatory_depends_on": "eval:doc.rule_type == 'Weekly Rotation'",
-   "options": "Shift Type"
   },
   {
    "depends_on": "eval:doc.rule_type == 'Monthly Half'",

@@ -1,7 +1,6 @@
 # Copyright (c) 2026, rayanaouf1512@gmail.com and contributors
 # For license information, please see license.txt
 
-# import frappe
 import frappe
 from frappe.model.document import Document
 from datetime import date, timedelta
@@ -14,10 +13,13 @@ class ShiftAssignmentRule(Document):
 
     def _validate_rule_fields(self):
         if self.rule_type == "Weekly Rotation":
-            if not self.morning_days and not self.evening_days:
-                frappe.throw("Weekly Rotation : vous devez renseigner au moins Morning Days ou Evening Days.")
-            self._validate_day_format(self.morning_days, "Morning Days")
-            self._validate_day_format(self.evening_days, "Evening Days")
+            if not self.weekly_shifts:
+                frappe.throw("Weekly Rotation : ajoutez au moins une ligne dans Créneaux hebdomadaires.")
+
+            for row in self.weekly_shifts:
+                self._validate_day_format(row.days, f"Ligne {row.idx} – Jours")
+                if not row.shift_type:
+                    frappe.throw(f"Ligne {row.idx} : Shift Type est obligatoire.")
 
         elif self.rule_type == "Monthly Half":
             if not self.first_half_shift:
@@ -37,12 +39,12 @@ class ShiftAssignmentRule(Document):
             if not d.isdigit() or int(d) not in range(7):
                 frappe.throw(
                     f"{label} : valeur invalide '{d}'. "
-                    f"Utilisez des chiffres de 0 (Lundi) à 6 (Dimanche), séparés par des virgules."
+                    f"Utilisez des chiffres de 0 à 6 séparés par des virgules."
                 )
 
 
 # ----------------------------
-# Helpers internes
+# Helpers
 # ----------------------------
 
 def _parse_days(raw):
@@ -64,10 +66,10 @@ def _shift_exists(employee, shift_type, target_date):
     return frappe.db.exists(
         "Shift Assignment",
         {
-            "employee":   employee,
+            "employee": employee,
             "shift_type": shift_type,
             "start_date": target_date,
-            "docstatus":  ["!=", 2],
+            "docstatus": ["!=", 2],
         },
     )
 
@@ -76,17 +78,19 @@ def _create_shift(employee, shift_type, target_date, summary):
     if _is_holiday(employee, target_date):
         summary["skipped"] += 1
         return
+
     if _shift_exists(employee, shift_type, target_date):
         summary["skipped"] += 1
         return
+
     try:
         doc = frappe.get_doc({
-            "doctype":    "Shift Assignment",
-            "employee":   employee,
+            "doctype": "Shift Assignment",
+            "employee": employee,
             "shift_type": shift_type,
             "start_date": target_date,
-            "end_date":   target_date,
-            "status":     "Active",
+            "end_date": target_date,
+            "status": "Active",
         })
         doc.insert(ignore_permissions=True)
         doc.submit()
@@ -100,33 +104,30 @@ def _create_shift(employee, shift_type, target_date, summary):
 
 
 # ----------------------------
-# Processors par rule_type
+# Weekly processor (NEW)
 # ----------------------------
 
 def _process_weekly_rotation(rule, target, summary):
-    morning_days = _parse_days(rule.morning_days)
-    evening_days = _parse_days(rule.evening_days)
     weekday = target.weekday()
+    matched = False
 
-    if weekday in morning_days:
-        if not rule.morning_shift_type:
-            frappe.log_error(
-                title="Shift Auto Assign – Champ manquant",
-                message=f"Règle {rule.name} : morning_shift_type non renseigné.",
-            )
-            summary["errors"] += 1
-            return
-        _create_shift(rule.employee, rule.morning_shift_type, target, summary)
-    elif weekday in evening_days:
-        if not rule.evening_shift_type:
-            frappe.log_error(
-                title="Shift Auto Assign – Champ manquant",
-                message=f"Règle {rule.name} : evening_shift_type non renseigné.",
-            )
-            summary["errors"] += 1
-            return
-        _create_shift(rule.employee, rule.evening_shift_type, target, summary)
-    else:
+    for row in rule.weekly_shifts:
+        days = _parse_days(row.days)
+
+        if weekday in days:
+            if not row.shift_type:
+                frappe.log_error(
+                    title="Shift Auto Assign – Champ manquant",
+                    message=f"Règle {rule.name} : shift_type manquant ligne {row.idx}",
+                )
+                summary["errors"] += 1
+                return
+
+            _create_shift(rule.employee, row.shift_type, target, summary)
+            matched = True
+            break
+
+    if not matched:
         summary["skipped"] += 1
 
 
@@ -141,56 +142,47 @@ def _process_fixed_shift(rule, target, summary):
 
 RULE_PROCESSORS = {
     "Weekly Rotation": _process_weekly_rotation,
-    "Monthly Half":    _process_monthly_half,
-    "Fixed Shift":     _process_fixed_shift,
+    "Monthly Half": _process_monthly_half,
+    "Fixed Shift": _process_fixed_shift,
 }
 
 
 # ----------------------------
-# Scheduled job — appelé par hooks.py
+# Scheduled job
 # ----------------------------
 
 def create_tomorrow_shifts():
     target = date.today() + timedelta(days=1)
     summary = {"created": 0, "skipped": 0, "errors": 0}
 
-    rules = frappe.get_all(
+    # On récupère seulement le "name" — weekly_shifts est une table enfant,
+    # pas une colonne SQL, donc on ne peut pas la mettre dans fields.
+    rule_names = frappe.get_all(
         "Shift Assignment Rule",
         filters={"is_active": 1},
-        fields=[
-            "name", "employee", "rule_type",
-            "morning_days", "morning_shift_type",
-            "evening_days", "evening_shift_type",
-            "first_half_shift", "second_half_shift",
-            "shift_type",
-        ]
+        fields=["name"]
     )
 
-    if not rules:
-        frappe.logger().info("[ShiftAssign] Aucune règle active trouvée.")
+    if not rule_names:
         return summary
 
-    for rule in rules:
+    for r in rule_names:
+        # frappe.get_doc charge le document complet avec toutes ses tables enfants
+        rule = frappe.get_doc("Shift Assignment Rule", r.name)
+
         processor = RULE_PROCESSORS.get(rule.rule_type)
         if not processor:
-            frappe.log_error(
-                title="Shift Auto Assign – Type inconnu",
-                message=f"rule_type '{rule.rule_type}' non géré (règle: {rule.name})",
-            )
             summary["errors"] += 1
             continue
+
         try:
             processor(rule, target, summary)
         except Exception as e:
             summary["errors"] += 1
             frappe.log_error(
                 title="Shift Auto Assign – Erreur inattendue",
-                message=f"Règle {rule.name} ({rule.employee}) : {e}",
+                message=f"{rule.name} : {e}",
             )
 
     frappe.db.commit()
-    frappe.logger().info(
-        f"[ShiftAssign] {target} — {summary['created']} créé(s), "
-        f"{summary['skipped']} ignoré(s), {summary['errors']} erreur(s)."
-    )
     return summary
