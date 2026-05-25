@@ -16,8 +16,7 @@
   "first_half_shift",
   "second_half_shift",
   "section_fixed",
-  "shift_type",
-  "off_days"
+  "shift_type"
  ],
  "fields": [
   {
@@ -106,14 +105,8 @@
    "label": "Shift Type",
    "mandatory_depends_on": "eval:doc.rule_type == 'Fixed Shift'",
    "options": "Shift Type"
-  },
-  {
-   "depends_on": "eval:doc.rule_type == 'Fixed Shift'",
-   "description": "Comma-separated weekday numbers to skip. Leave empty for no fixed day off. Ex: 3 (Thursday)",
-   "fieldname": "off_days",
-   "fieldtype": "Data",
-   "label": "Off Days"
   }
+
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,

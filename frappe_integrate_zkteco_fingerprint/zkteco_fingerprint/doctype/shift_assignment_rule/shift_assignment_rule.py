@@ -28,8 +28,6 @@ class ShiftAssignmentRule(Document):
         elif self.rule_type == "Fixed Shift":
             if not self.shift_type:
                 frappe.throw("Fixed Shift : Shift Type est obligatoire.")
-            if self.off_days:
-                self._validate_day_format(self.off_days, "Off Days")
 
     def _validate_day_format(self, value, label):
         if not value:
@@ -124,10 +122,6 @@ def _process_monthly_half(rule, target, summary):
 
 
 def _process_fixed_shift(rule, target, summary):
-    off_days = _parse_days(rule.off_days)
-    if target.weekday() in off_days:
-        summary["skipped"] += 1
-        return
     _create_shift(rule.employee, rule.shift_type, target, summary)
 
 
@@ -153,7 +147,6 @@ def create_tomorrow_shifts():
             "name", "employee", "rule_type",
             "morning_days", "evening_days",
             "first_half_shift", "second_half_shift",
-            "shift_type", "off_days",
         ]
     )
 
