@@ -11,7 +11,9 @@
   "is_active",
   "section_weekly",
   "morning_days",
+  "morning_shift_type",
   "evening_days",
+  "evening_shift_type",
   "section_monthly",
   "first_half_shift",
   "second_half_shift",
@@ -61,11 +63,29 @@
   },
   {
    "depends_on": "eval:doc.rule_type == 'Weekly Rotation'",
+   "description": "Shift type assigned on morning days",
+   "fieldname": "morning_shift_type",
+   "fieldtype": "Link",
+   "label": "Morning Shift Type",
+   "mandatory_depends_on": "eval:doc.rule_type == 'Weekly Rotation'",
+   "options": "Shift Type"
+  },
+  {
+   "depends_on": "eval:doc.rule_type == 'Weekly Rotation'",
    "description": "Comma-separated weekday numbers: 0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri, 5=Sat, 6=Sun. Ex: 2,5,6",
    "fieldname": "evening_days",
    "fieldtype": "Data",
    "label": "Evening Shift Days",
    "mandatory_depends_on": "eval:doc.rule_type == 'Weekly Rotation'"
+  },
+  {
+   "depends_on": "eval:doc.rule_type == 'Weekly Rotation'",
+   "description": "Shift type assigned on evening days",
+   "fieldname": "evening_shift_type",
+   "fieldtype": "Link",
+   "label": "Evening Shift Type",
+   "mandatory_depends_on": "eval:doc.rule_type == 'Weekly Rotation'",
+   "options": "Shift Type"
   },
   {
    "depends_on": "eval:doc.rule_type == 'Monthly Half'",
@@ -78,7 +98,7 @@
    "description": "Shift assigned from day 1 to 15 of the month",
    "fieldname": "first_half_shift",
    "fieldtype": "Link",
-   "label": "First Half Shift (1\u201315)",
+   "label": "First Half Shift (1–15)",
    "mandatory_depends_on": "eval:doc.rule_type == 'Monthly Half'",
    "options": "Shift Type"
   },
@@ -87,7 +107,7 @@
    "description": "Shift assigned from day 16 to end of month",
    "fieldname": "second_half_shift",
    "fieldtype": "Link",
-   "label": "Second Half Shift (16\u201331)",
+   "label": "Second Half Shift (16–31)",
    "mandatory_depends_on": "eval:doc.rule_type == 'Monthly Half'",
    "options": "Shift Type"
   },
@@ -106,7 +126,6 @@
    "mandatory_depends_on": "eval:doc.rule_type == 'Fixed Shift'",
    "options": "Shift Type"
   }
-
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,

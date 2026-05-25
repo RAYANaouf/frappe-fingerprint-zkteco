@@ -109,9 +109,23 @@ def _process_weekly_rotation(rule, target, summary):
     weekday = target.weekday()
 
     if weekday in morning_days:
-        _create_shift(rule.employee, "Morning Shift", target, summary)
+        if not rule.morning_shift_type:
+            frappe.log_error(
+                title="Shift Auto Assign – Champ manquant",
+                message=f"Règle {rule.name} : morning_shift_type non renseigné.",
+            )
+            summary["errors"] += 1
+            return
+        _create_shift(rule.employee, rule.morning_shift_type, target, summary)
     elif weekday in evening_days:
-        _create_shift(rule.employee, "Evening Shift", target, summary)
+        if not rule.evening_shift_type:
+            frappe.log_error(
+                title="Shift Auto Assign – Champ manquant",
+                message=f"Règle {rule.name} : evening_shift_type non renseigné.",
+            )
+            summary["errors"] += 1
+            return
+        _create_shift(rule.employee, rule.evening_shift_type, target, summary)
     else:
         summary["skipped"] += 1
 
@@ -145,8 +159,10 @@ def create_tomorrow_shifts():
         filters={"is_active": 1},
         fields=[
             "name", "employee", "rule_type",
-            "morning_days", "evening_days",
+            "morning_days", "morning_shift_type",
+            "evening_days", "evening_shift_type",
             "first_half_shift", "second_half_shift",
+            "shift_type",
         ]
     )
 
