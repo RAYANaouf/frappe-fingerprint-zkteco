@@ -1,0 +1,95 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:DAR-{date}",
+ "creation": "2026-05-26 11:11:00.548582",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "date",
+  "total_employees",
+  "total_present",
+  "total_absent",
+  "total_anomalies",
+  "section_details",
+  "details"
+ ],
+ "fields": [
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "total_employees",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Total Employés",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_present",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Présents",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_absent",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Absents",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_anomalies",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Anomalies",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_details",
+   "fieldtype": "Section Break",
+   "label": "Détail par Employé"
+  },
+  {
+   "fieldname": "details",
+   "fieldtype": "Table",
+   "label": "Détails de Présence",
+   "options": "Employee Attendance Detail"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-05-26 11:11:00.548582",
+ "modified_by": "Administrator",
+ "module": "zkteco fingerprint",
+ "name": "Daily Attendance Report",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "date",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 0
+}

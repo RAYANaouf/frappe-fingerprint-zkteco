@@ -1,0 +1,146 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-05-26 11:11:36.332682",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "employee_name",
+  "department",
+  "shift_type",
+  "scheduled_start",
+  "scheduled_end",
+  "column_break_1",
+  "checkin_time",
+  "checkout_time",
+  "worked_hours",
+  "column_break_2",
+  "status",
+  "late_minutes",
+  "early_minutes",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Employé",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nom",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.department",
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Département",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fieldname": "shift_type",
+   "fieldtype": "Link",
+   "label": "Shift Assigné",
+   "options": "Shift Type"
+  },
+  {
+   "fieldname": "scheduled_start",
+   "fieldtype": "Time",
+   "label": "Début Prévu"
+  },
+  {
+   "fieldname": "scheduled_end",
+   "fieldtype": "Time",
+   "label": "Fin Prévue"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "checkin_time",
+   "fieldtype": "Datetime",
+   "label": "Heure Check-in"
+  },
+  {
+   "fieldname": "checkout_time",
+   "fieldtype": "Datetime",
+   "label": "Heure Check-out"
+  },
+  {
+   "fieldname": "worked_hours",
+   "fieldtype": "Float",
+   "label": "Heures Travaillées",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Statut",
+   "options": "\nPresent\nAbsent\nRetard\nDepart Anticipe\nCheckin Sans Checkout\nCheckout Sans Checkin\nSans Shift - Checkin\nSans Shift - Checkout Anticipe\nAnomalie Inconnue",
+   "reqd": 1
+  },
+  {
+   "fieldname": "late_minutes",
+   "fieldtype": "Int",
+   "label": "Minutes de Retard"
+  },
+  {
+   "fieldname": "early_minutes",
+   "fieldtype": "Int",
+   "label": "Minutes Départ Anticipé"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarques"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-05-26 11:11:36.332682",
+ "modified_by": "Administrator",
+ "module": "zkteco fingerprint",
+ "name": "Employee Attendance Detail",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 0
+}
