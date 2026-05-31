@@ -295,7 +295,7 @@ scheduler_events = {
         ]
      },
     "daily": [
-        "frappe_integrate_zkteco_fingerprint.zkteco_fingerprint.doctype.shift_assignment_rule.shift_assignment_rule.create_tomorrow_shifts",
-        "frappe_integrate_zkteco_fingerprint.zkteco_fingerprint.doctype.daily_attendance_report.daily_attendance_report.create_daily_attendance_report"
-    ],
+        "frappe_integrate_zkteco_fingerprint.tasks.run_create_tomorrow_shifts",
+        "frappe_integrate_zkteco_fingerprint.tasks.run_daily_attendance_report"
+    ]
 }
