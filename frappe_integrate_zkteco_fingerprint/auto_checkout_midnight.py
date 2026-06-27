@@ -4,7 +4,7 @@ def auto_checkout_midnight():
     today         = datetime.now().date()
     day_start     = datetime.combine(today, dt_time(0, 0, 0))
     day_end       = datetime.combine(today, dt_time(23, 59, 59))
-    auto_out_time = datetime.combine(today, dt_time(23, 59, 0))
+    auto_out_time = datetime.combine(today, dt_time(22, 0, 0))
 
     frappe.logger().info(f"[MidnightCheckout] Traitement journée {today}")
 
