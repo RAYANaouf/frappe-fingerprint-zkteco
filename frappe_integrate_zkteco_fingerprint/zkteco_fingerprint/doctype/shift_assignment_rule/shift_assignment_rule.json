@@ -7,6 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "employee",
+  "employee_name",
   "rule_type",
   "is_active",
   "section_weekly",
@@ -51,12 +52,12 @@
    "label": "Weekly Rotation Settings"
   },
   {
+   "depends_on": "eval:doc.rule_type == 'Weekly Rotation'",
    "fieldname": "weekly_shifts",
    "fieldtype": "Table",
    "label": "Weekly Shifts",
-   "options": "Weekly Shift Line",
-   "depends_on": "eval:doc.rule_type == 'Weekly Rotation'",
-   "mandatory_depends_on": "eval:doc.rule_type == 'Weekly Rotation'"
+   "mandatory_depends_on": "eval:doc.rule_type == 'Weekly Rotation'",
+   "options": "Weekly Shift Line"
   },
   {
    "depends_on": "eval:doc.rule_type == 'Monthly Half'",
@@ -69,7 +70,7 @@
    "description": "Shift assigned from day 1 to 15 of the month",
    "fieldname": "first_half_shift",
    "fieldtype": "Link",
-   "label": "First Half Shift (1–15)",
+   "label": "First Half Shift (1\u201315)",
    "mandatory_depends_on": "eval:doc.rule_type == 'Monthly Half'",
    "options": "Shift Type"
   },
@@ -78,7 +79,7 @@
    "description": "Shift assigned from day 16 to end of month",
    "fieldname": "second_half_shift",
    "fieldtype": "Link",
-   "label": "Second Half Shift (16–31)",
+   "label": "Second Half Shift (16\u201331)",
    "mandatory_depends_on": "eval:doc.rule_type == 'Monthly Half'",
    "options": "Shift Type"
   },
@@ -96,12 +97,20 @@
    "label": "Shift Type",
    "mandatory_depends_on": "eval:doc.rule_type == 'Fixed Shift'",
    "options": "Shift Type"
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Name",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-24 19:48:01.082953",
+ "modified": "2026-06-28 19:31:55.210428",
  "modified_by": "Administrator",
  "module": "zkteco fingerprint",
  "name": "Shift Assignment Rule",
