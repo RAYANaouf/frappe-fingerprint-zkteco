@@ -62,19 +62,23 @@ def iclock_cdata():
                 if existing:
                     frappe.log_error(f"Duplicate scan ignored for {employee}")
                     continue
-
-                last_log = frappe.get_all(
+                scan_date = ts.date()
+                day_start = datetime.combine(scan_date, datetime.min.time())
+                day_end = datetime.combine(scan_date, datetime.max.time())
+                last_log_today = frappe.get_all(
                     "Employee Checkin",
-                    filters={"employee": employee},
+                    filters={
+                        "employee": employee,
+                        "time": ["between", [day_start, day_end]]
+                    },
                     fields=["log_type"],
                     order_by="time desc",
                     limit_page_length=1
                 )
-
-                log_type = "IN"
-                if last_log and last_log[0].log_type == "IN":
-                    log_type = "OUT"
-
+                if last_log_today:
+                    log_type = "OUT" if last_log_today[0].log_type == "IN" else "IN"
+                else:
+                    log_type = "IN"                 
                 frappe.get_doc({
                     "doctype":  "Employee Checkin",
                     "employee": employee,

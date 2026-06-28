@@ -289,11 +289,6 @@ fixtures = [
 # }
 
 scheduler_events = {
-     "cron": {
-        "55 23 * * *": [
-            "frappe_integrate_zkteco_fingerprint.auto_checkout_midnight.auto_checkout_midnight"
-        ]
-     },
     "daily": [
         "frappe_integrate_zkteco_fingerprint.tasks.run_create_tomorrow_shifts",
         "frappe_integrate_zkteco_fingerprint.tasks.run_daily_attendance_report"
