@@ -1,50 +1,87 @@
-"Present","Présent"
-"Absent","Absent"
-"Late","Retard"
-"Early Departure","Départ Anticipé"
-"Checkin Without Checkout","Checkin Sans Checkout"
-"Checkout Without Checkin","Checkout Sans Checkin"
-"No Shift - Checkin","Sans Shift - Checkin"
-"No Shift - Early Checkout","Sans Shift - Checkout Anticipé"
-"Unknown Anomaly","Anomalie Inconnue"
-"No checkin or checkout logs recorded.","Aucun pointage enregistré."
-"Arrived on time. Missing checkout log.","Arrivée à l'heure. Pas de checkout."
-"Checkout log recorded without a corresponding checkin.","Checkout enregistré sans checkin correspondant."
-"Arrived late by {0} min.","Arrivée avec {0} min de retard."
-"Left {0} min before shift ended.","Départ {0} min avant la fin du shift."
-"Arrived on time. Missing checkout log.","Arrivée à l'heure. Pas de checkout."
-"Checkin without checkout and without an active Shift Assignment.","Checkin sans checkout et sans Shift Assignment actif."
-"Checkout without checkin and without an active Shift Assignment.","Checkout sans checkin et sans Shift Assignment actif."
-"Shift Assignment Rule","Règle d'affectation des shifts"
-"Weekly Shift Line","Ligne de shift hebdomadaire"
-"Employee","Employé"
-"Name","Nom"
-"Rule Type","Type de règle"
-"Is Active","Est actif"
-"Weekly Rotation Settings","Paramètres de rotation hebdomadaire"
-"Weekly Shifts","Shifts hebdomadaires"
-"Monthly Half Settings","Paramètres de mi-mois (Quinzaine)"
-"First Half Shift (1–15)","Shift de la première quinzaine (1–15)"
-"Second Half Shift (16–31)","Shift de la seconde quinzaine (16–31)"
-"Fixed Shift Settings","Paramètres de shift fixe"
-"Shift Type","Type de shift"
-"Day","Jour"
-"Weekly Rotation","Rotation hebdomadaire"
-"Monthly Half","Par quinzaine (Mensuel)"
-"Fixed Shift","Shift fixe"
-"Monday","Lundi"
-"Tuesday","Mardi"
-"Wednesday","Mercredi"
-"Thursday","Jeudi"
-"Friday","Vendredi"
-"Saturday","Samedi"
-"Sunday","Dimanche"
-"Shift assigned from day 1 to 15 of the month","Shift assigné du 1er au 15 du mois"
-"Shift assigned from day 16 to end of month","Shift assigné du 16 à la fin du mois"
-"The fixed shift assigned every working day","Le shift fixe assigné chaque jour ouvré"
-"Weekly Rotation: Add at least one row in Weekly Shifts.","Rotation hebdomadaire : Ajoutez au moins une ligne dans les shifts hebdomadaires."
-"Row {0}: Day is required.","Ligne {0} : Le jour est obligatoire."
-"Row {0}: Shift Type is required.","Ligne {0} : Le type de shift est obligatoire."
-"Monthly Half: First Half Shift is required.","Par quinzaine : Le shift de la première quinzaine est obligatoire."
-"Monthly Half: Second Half Shift is required.","Par quinzaine : Le shift de la seconde quinzaine est obligatoire."
-"Fixed Shift: Shift Type is required.","Shift fixe : Le type de shift est obligatoire."
+Present,Présent
+Absent,Absent
+Late,Retard
+Early Departure,Départ Anticipé
+Checkin Without Checkout,Checkin Sans Checkout
+Checkout Without Checkin,Checkout Sans Checkin
+No Shift - Checkin,Sans Shift - Checkin
+No Shift - Early Checkout,Sans Shift - Checkout Anticipé
+Unknown Anomaly,Anomalie Inconnue
+No checkin or checkout logs recorded.,Aucun pointage enregistré.
+Arrived on time. Missing checkout log.,Arrivée à l'heure. Pas de checkout.
+Checkout log recorded without a corresponding checkin.,Checkout enregistré sans checkin correspondant.
+Arrived late by {0} min.,Arrivée avec {0} min de retard.
+Left {0} min before shift ended.,Départ {0} min avant la fin du shift.
+Checkin without checkout and without an active Shift Assignment.,Checkin sans checkout et sans Shift Assignment actif.
+Checkout without checkin and without an active Shift Assignment.,Checkout sans checkin et sans Shift Assignment actif.
+Shift Assignment Rule,Règle d'affectation des shifts
+Weekly Shift Line,Ligne de shift hebdomadaire
+Employee,Employé
+Name,Nom
+Rule Type,Type de règle
+Is Active,Est actif
+Weekly Rotation Settings,Paramètres de rotation hebdomadaire
+Weekly Shifts,Shifts hebdomadaires
+Monthly Half Settings,Paramètres de mi-mois (Quinzaine)
+First Half Shift (1–15),Shift de la première quinzaine (1–15)
+Second Half Shift (16–31),Shift de la seconde quinzaine (16–31)
+Fixed Shift Settings,Paramètres de shift fixe
+Shift Type,Type de shift
+Day,Jour
+Weekly Rotation,Rotation hebdomadaire
+Monthly Half,Par quinzaine (Mensuel)
+Fixed Shift,Shift fixe
+Monday,Lundi
+Tuesday,Mardi
+Wednesday,Mercredi
+Thursday,Jeudi
+Friday,Vendredi
+Saturday,Samedi
+Sunday,Dimanche
+Shift assigned from day 1 to 15 of the month,Shift assigné du 1er au 15 du mois
+Shift assigned from day 16 to end of month,Shift assigné du 16 à la fin du mois
+The fixed shift assigned every working day,Le shift fixe assigné chaque jour ouvré
+Weekly Rotation: Add at least one row in Weekly Shifts.,Rotation hebdomadaire : Ajoutez au moins une ligne dans les shifts hebdomadaires.
+Row {0}: Day is required.,Ligne {0} : Le jour est obligatoire.
+Row {0}: Shift Type is required.,Ligne {0} : Le type de shift est obligatoire.
+Monthly Half: First Half Shift is required.,Par quinzaine : Le shift de la première quinzaine est obligatoire.
+Monthly Half: Second Half Shift is required.,Par quinzaine : Le shift de la seconde quinzaine est obligatoire.
+Fixed Shift: Shift Type is required.,Shift fixe : Le type de shift est obligatoire.
+Daily Attendance Report,Rapport de présence quotidien
+Employee Attendance Detail,Détail de présence de l'employé
+Total Employees,Total Employés
+Total Present,Total Présents
+Total Absent,Total Absents
+Total Anomalies,Total Anomalies
+Employee Details,Détail par employé
+Attendance Details,Détails de présence
+Employee Name,Nom de l'employé
+Department,Département
+Assigned Shift,Shift assigné
+Scheduled Start,Début prévu
+Scheduled End,Fin prévue
+Check-in Time,Heure de Check-in
+Check-out Time,Heure de Check-out
+Worked Hours,Heures travaillées
+Status,Statut
+Late Minutes,Minutes de retard
+Early Minutes,Minutes départ anticipé
+Remarks,Remarques
+Mon,Lun
+Tue,Mar
+Wed,Mer
+Thu,Jeu
+Fri,Ven
+Sat,Sam
+Sun,Dim
+No check-in logs recorded.,Aucun pointage enregistré.
+Arrived on time. Missing check-out.,Arrivée à l'heure. Pas de check-out.
+Check-out logged without a matching check-in.,Check-out enregistré sans check-in correspondant.
+Arrived {0} min late.,Arrivée avec {0} min de retard.
+Arrived {0} min late. Missing check-out.,Arrivée avec {0} min de retard. Pas de check-out.
+Departed {0} min before shift ended.,Départ {0} min avant la fin du shift.
+Late by {0} min at arrival. Departed {1} min before shift ended.,Retard de {0} min à l'arrivée. Départ {1} min avant la fin du shift.
+Attendance complies with assigned shift.,Présence conforme au shift.
+Complete logs ({0}h) without an active Shift Assignment.,Pointage complet ({0}h) sans Shift Assignment actif.
+Check-in logged without check-out and without an active Shift Assignment.,Check-in sans checkout et sans Shift Assignment actif.
+Check-out logged without check-in and without an active Shift Assignment.,Check-out sans checkin et sans Shift Assignment actif.

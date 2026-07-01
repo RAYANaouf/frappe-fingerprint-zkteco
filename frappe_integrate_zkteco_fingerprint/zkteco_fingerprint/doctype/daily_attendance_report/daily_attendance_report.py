@@ -10,18 +10,18 @@ class DailyAttendanceReport(Document):
     pass
 
 
-LATE_TOLERANCE = 5
-EARLY_TOLERANCE = 5
+LATE_TOLERANCE  = 5 
+EARLY_TOLERANCE = 5 
 
-STATUS_PRESENT = "Present"
-STATUS_ABSENT = "Absent"
-STATUS_LATE = "Late"
-STATUS_EARLY = "Early Departure"
+STATUS_PRESENT             = "Present"
+STATUS_ABSENT              = "Absent"
+STATUS_LATE                = "Late"
+STATUS_EARLY               = "Early Departure"
 STATUS_CHECKIN_NO_CHECKOUT = "Checkin Without Checkout"
 STATUS_CHECKOUT_NO_CHECKIN = "Checkout Without Checkin"
-STATUS_NO_SHIFT_CHECKIN = "No Shift - Checkin"
-STATUS_NO_SHIFT_EARLY_OUT = "No Shift - Early Checkout"
-STATUS_UNKNOWN = "Unknown Anomaly"
+STATUS_NO_SHIFT_CHECKIN    = "No Shift - Checkin"
+STATUS_NO_SHIFT_EARLY_OUT  = "No Shift - Early Checkout"
+STATUS_UNKNOWN             = "Unknown Anomaly"
 
 
 def _get_shift(employee, d):
@@ -44,12 +44,12 @@ def _get_shift(employee, d):
 
 def _get_checkins(employee, d):
     start = datetime.combine(d, datetime.min.time())
-    end = datetime.combine(d, datetime.max.time())
+    end   = datetime.combine(d, datetime.max.time())
     return frappe.get_all(
         "Employee Checkin",
         filters={
-            "employee": employee,
-            "time": ["between", [start, end]],
+            "employee":  employee,
+            "time":      ["between", [start, end]],
             "docstatus": ["!=", 2],
         },
         fields=["time", "log_type"],
@@ -76,26 +76,26 @@ def _diff_min(dt1, dt2):
 
 def _analyse(employee, d):
     checkins = _get_checkins(employee, d)
-    ins = [c for c in checkins if c.log_type == "IN"]
+    ins  = [c for c in checkins if c.log_type == "IN"]
     outs = [c for c in checkins if c.log_type == "OUT"]
 
-    first_in = ins[0] if ins else None
+    first_in = ins[0]   if ins  else None
     last_out = outs[-1] if outs else None
 
     shift = _get_shift(employee, d)
 
     row = {
-        "employee": employee,
-        "shift_type": shift.shift_type if shift else None,
+        "employee":        employee,
+        "shift_type":      shift.shift_type if shift else None,
         "scheduled_start": None,
-        "scheduled_end": None,
-        "checkin_time": first_in.time if first_in else None,
-        "checkout_time": last_out.time if last_out else None,
-        "worked_hours": 0.0,
-        "late_minutes": 0,
-        "early_minutes": 0,
-        "status": STATUS_UNKNOWN,
-        "remarks": "",
+        "scheduled_end":   None,
+        "checkin_time":    first_in.time if first_in else None,
+        "checkout_time":   last_out.time if last_out else None,
+        "worked_hours":    0.0,
+        "late_minutes":    0,
+        "early_minutes":   0,
+        "status":          STATUS_UNKNOWN,
+        "remarks":         "",
     }
 
     if first_in and last_out:
@@ -105,7 +105,7 @@ def _analyse(employee, d):
 
     if shift:
         s_start = _td_to_dt(d, shift.start_time)
-        s_end = _td_to_dt(d, shift.end_time)
+        s_end   = _td_to_dt(d, shift.end_time)
 
         if s_end and s_start and s_end < s_start:
             s_end += timedelta(days=1)
@@ -116,59 +116,65 @@ def _analyse(employee, d):
             row["scheduled_end"] = s_end.strftime("%H:%M:%S")
 
         if not first_in and not last_out:
-            row["status"] = STATUS_ABSENT
-            row["remarks"] = "No checkin or checkout logs recorded."
+            row["status"]  = STATUS_ABSENT
+            row["remarks"] = "No check-in logs recorded."
 
         elif first_in and not last_out:
             late = _diff_min(first_in.time, s_start)
             row["status"] = STATUS_CHECKIN_NO_CHECKOUT
             if late > LATE_TOLERANCE:
                 row["late_minutes"] = late
-                row["remarks"] = f"Arrived late by {late} min. Missing checkout log."
+                row["remarks"] = f"Arrived {late} min late. Missing check-out."
             else:
-                row["remarks"] = "Arrived on time. Missing checkout log."
+                row["remarks"] = "Arrived on time. Missing check-out."
 
         elif not first_in and last_out:
-            row["status"] = STATUS_CHECKOUT_NO_CHECKIN
-            row["remarks"] = "Checkout log recorded without a corresponding checkin."
+            row["status"]  = STATUS_CHECKOUT_NO_CHECKIN
+            row["remarks"] = "Check-out logged without a matching check-in."
 
         else:
-            late = _diff_min(first_in.time, s_start)
+            late  = _diff_min(first_in.time, s_start)
             early = _diff_min(s_end, last_out.time) if s_end else 0
 
-            is_late = late > LATE_TOLERANCE
+            is_late  = late  > LATE_TOLERANCE
             is_early = early > EARLY_TOLERANCE
 
             if is_late and is_early:
-                row["late_minutes"] = late
+                row["late_minutes"]  = late
                 row["early_minutes"] = early
-                row["status"] = STATUS_LATE
-                row["remarks"] = f"Arrived {late} min late. Left {early} min before shift ended."
+                row["status"]  = STATUS_LATE
+                row["remarks"] = (
+                    f"Late by {late} min at arrival. "
+                    f"Departed {early} min before shift ended."
+                )
             elif is_late:
                 row["late_minutes"] = late
-                row["status"] = STATUS_LATE
-                row["remarks"] = f"Arrived late by {late} min."
+                row["status"]  = STATUS_LATE
+                row["remarks"] = f"Arrived {late} min late."
             elif is_early:
                 row["early_minutes"] = early
-                row["status"] = STATUS_EARLY
-                row["remarks"] = f"Left {early} min before shift ended."
+                row["status"]  = STATUS_EARLY
+                row["remarks"] = f"Departed {early} min before shift ended."
             else:
-                row["status"] = STATUS_PRESENT
-                row["remarks"] = "Attendance complies with shift schedule."
+                row["status"]  = STATUS_PRESENT
+                row["remarks"] = "Attendance complies with assigned shift."
 
     else:
         if not first_in and not last_out:
-            return None
+            return None  
 
         elif first_in:
             row["status"] = STATUS_NO_SHIFT_CHECKIN
             if last_out:
-                row["remarks"] = f"Full logs recorded ({row['worked_hours']}h) without an active Shift Assignment."
+                row["remarks"] = (
+                    f"Complete logs ({row['worked_hours']}h) "
+                    f"without an active Shift Assignment."
+                )
             else:
-                row["remarks"] = "Checkin without checkout and without an active Shift Assignment."
+                row["remarks"] = "Check-in logged without check-out and without an active Shift Assignment."
         else:
-            row["status"] = STATUS_NO_SHIFT_EARLY_OUT
-            row["remarks"] = "Checkout without checkin and without an active Shift Assignment."
+            row["status"]  = STATUS_NO_SHIFT_EARLY_OUT
+            row["remarks"] = "Check-out logged without check-in and without an active Shift Assignment."
 
     return row
 
@@ -180,7 +186,7 @@ def create_daily_attendance_report(target_date=None):
     if isinstance(target_date, str):
         target_date = datetime.strptime(target_date, "%Y-%m-%d").date()
 
-    frappe.logger().info(f"[DailyAttendanceReport] Starting generation for {target_date}")
+    frappe.logger().info(f"[DailyAttendanceReport] Generation started for {target_date}")
 
     existing = frappe.db.get_value(
         "Daily Attendance Report", {"date": target_date}, "name"
@@ -197,9 +203,9 @@ def create_daily_attendance_report(target_date=None):
         fields=["name"],
     )
 
-    details = []
-    total_present = 0
-    total_absent = 0
+    details         = []
+    total_present   = 0
+    total_absent    = 0
     total_anomalies = 0
 
     for emp in employees:
@@ -221,15 +227,15 @@ def create_daily_attendance_report(target_date=None):
 
     if not details:
         frappe.logger().info(
-            f"[DailyAttendanceReport] No logs found for {target_date}, report not created."
+            f"[DailyAttendanceReport] No check-in records for {target_date}, report skipped."
         )
         return None
 
     report = frappe.new_doc("Daily Attendance Report")
-    report.date = target_date
+    report.date            = target_date
     report.total_employees = len(employees)
-    report.total_present = total_present
-    report.total_absent = total_absent
+    report.total_present   = total_present
+    report.total_absent    = total_absent
     report.total_anomalies = total_anomalies
 
     for d in details:

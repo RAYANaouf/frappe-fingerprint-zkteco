@@ -1,13 +1,12 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2026-05-26 11:11:36.332682",
+ "creation": "2026-06-30 15:19:15.527754",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "employee",
   "employee_name",
-  "department",
   "shift_type",
   "scheduled_start",
   "scheduled_end",
@@ -27,7 +26,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "Employé",
+   "label": "Employ\u00e9",
    "options": "Employee",
    "reqd": 1
   },
@@ -40,29 +39,20 @@
    "read_only": 1
   },
   {
-   "fetch_from": "employee.department",
-   "fieldname": "department",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Département",
-   "options": "Department",
-   "read_only": 1
-  },
-  {
    "fieldname": "shift_type",
    "fieldtype": "Link",
-   "label": "Shift Assigné",
+   "label": "Shift Assign\u00e9",
    "options": "Shift Type"
   },
   {
    "fieldname": "scheduled_start",
    "fieldtype": "Time",
-   "label": "Début Prévu"
+   "label": "D\u00e9but Pr\u00e9vu"
   },
   {
    "fieldname": "scheduled_end",
    "fieldtype": "Time",
-   "label": "Fin Prévue"
+   "label": "Fin Pr\u00e9vue"
   },
   {
    "fieldname": "column_break_1",
@@ -81,7 +71,7 @@
   {
    "fieldname": "worked_hours",
    "fieldtype": "Float",
-   "label": "Heures Travaillées",
+   "label": "Heures Travaill\u00e9es",
    "precision": "2",
    "read_only": 1
   },
@@ -106,7 +96,7 @@
   {
    "fieldname": "early_minutes",
    "fieldtype": "Int",
-   "label": "Minutes Départ Anticipé"
+   "label": "Minutes D\u00e9part Anticip\u00e9"
   },
   {
    "fieldname": "remarks",
@@ -118,29 +108,15 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-05-26 11:11:36.332682",
+ "modified": "2026-07-01 15:50:58.889701",
  "modified_by": "Administrator",
  "module": "zkteco fingerprint",
  "name": "Employee Attendance Detail",
  "owner": "Administrator",
- "permissions": [
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "System Manager",
-   "share": 1,
-   "write": 1
-  }
- ],
+ "permissions": [],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
- "track_changes": 0
+ "states": []
 }

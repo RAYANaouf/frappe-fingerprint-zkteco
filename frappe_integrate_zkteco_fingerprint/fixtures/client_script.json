@@ -1,1 +1,13 @@
-[]
+[
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Daily Attendance Report",
+  "enabled": 1,
+  "modified": "2026-07-01 16:45:48.400716",
+  "module": "zkteco fingerprint",
+  "name": "Daily Attendance Report",
+  "script": "frappe.ui.form.on('Daily Attendance Report', {\r\n    refresh: function(frm) {\r\n    }\r\n});\r\n\r\nfrappe.ui.form.on('Employee Attendance Detail', {\r\n    checkin_time: function(frm, cdt, cdn) {\r\n        calculate_worked_hours(frm, cdt, cdn);\r\n    },\r\n    checkout_time: function(frm, cdt, cdn) {\r\n        calculate_worked_hours(frm, cdt, cdn);\r\n    }\r\n});\r\n\r\nfunction calculate_worked_hours(frm, cdt, cdn) {\r\n    let row = frappe.get_doc(cdt, cdn);\r\n    \r\n    if (row.checkin_time && row.checkout_time) {\r\n        let in_time = new Date(row.checkin_time);\r\n        let out_time = new Date(row.checkout_time);\r\n        \r\n        if (out_time > in_time) {\r\n            let diff_ms = out_time - in_time;\r\n            let hours = diff_ms / (1000 * 60 * 60);\r\n            \r\n            frappe.model.set_value(cdt, cdn, 'worked_hours', hours.toFixed(2));\r\n        } else {\r\n            frappe.model.set_value(cdt, cdn, 'worked_hours', 0);\r\n        }\r\n    } else {\r\n        frappe.model.set_value(cdt, cdn, 'worked_hours', 0);\r\n    }\r\n}",
+  "view": "Form"
+ }
+]

@@ -39,45 +39,51 @@ def _is_holiday(employee, target_date):
     )
 
 
-def _shift_exists(employee, shift_type, target_date):
-    return frappe.db.exists(
-        "Shift Assignment",
-        {
-            "employee": employee,
-            "shift_type": shift_type,
-            "start_date": target_date,
-            "docstatus": ["!=", 2],
-        },
-    )
-
-
 def _create_shift(employee, shift_type, target_date, summary):
     if _is_holiday(employee, target_date):
         summary["skipped"] += 1
         return
 
-    if _shift_exists(employee, shift_type, target_date):
-        summary["skipped"] += 1
-        return
+    existing_assignment = frappe.db.get_value(
+        "Shift Assignment",
+        {"employee": employee, "status": "Active", "docstatus": 1},
+        ["name", "shift_type"],
+        as_dict=True
+    )
 
-    try:
-        doc = frappe.get_doc({
-            "doctype": "Shift Assignment",
-            "employee": employee,
-            "shift_type": shift_type,
-            "start_date": target_date,
-            "end_date": target_date,
-            "status": "Active",
-        })
-        doc.insert(ignore_permissions=True)
-        doc.submit()
-        summary["created"] += 1
-    except Exception as e:
-        summary["errors"] += 1
-        frappe.log_error(
-            title="Shift Auto Assign – Error",
-            message=f"{employee} | {shift_type} | {target_date} : {e}",
-        )
+    if existing_assignment:
+        if existing_assignment.shift_type == shift_type:
+            summary["skipped"] += 1
+            return
+
+        try:
+            frappe.db.set_value("Shift Assignment", existing_assignment.name, "shift_type", shift_type)
+            summary["created"] += 1
+        except Exception as e:
+            summary["errors"] += 1
+            frappe.log_error(
+                title="Shift Auto Assign – Error on Update",
+                message=f"Impossible de mettre à jour le shift pour {employee} vers {shift_type} : {e}",
+            )
+    else:
+        try:
+            doc = frappe.get_doc({
+                "doctype": "Shift Assignment",
+                "employee": employee,
+                "shift_type": shift_type,
+                "start_date": target_date,
+                "end_date": None,
+                "status": "Active",
+            })
+            doc.insert(ignore_permissions=True)
+            doc.submit()
+            summary["created"] += 1
+        except Exception as e:
+            summary["errors"] += 1
+            frappe.log_error(
+                title="Shift Auto Assign – Error on Creation",
+                message=f"Impossible de créer le premier shift pour {employee} | {shift_type} : {e}",
+            )
 
 
 def _process_weekly_rotation(rule, target, summary):
@@ -127,33 +133,3 @@ RULE_PROCESSORS = {
 
 def create_tomorrow_shifts():
     target = date.today() + timedelta(days=1)
-    summary = {"created": 0, "skipped": 0, "errors": 0}
-
-    rule_names = frappe.get_all(
-        "Shift Assignment Rule",
-        filters={"is_active": 1},
-        fields=["name"]
-    )
-
-    if not rule_names:
-        return summary
-
-    for r in rule_names:
-        rule = frappe.get_doc("Shift Assignment Rule", r.name)
-
-        processor = RULE_PROCESSORS.get(rule.rule_type)
-        if not processor:
-            summary["errors"] += 1
-            continue
-
-        try:
-            processor(rule, target, summary)
-        except Exception as e:
-            summary["errors"] += 1
-            frappe.log_error(
-                title="Shift Auto Assign – Unexpected Error",
-                message=f"{rule.name} : {e}",
-            )
-
-    frappe.db.commit()
-    return summary

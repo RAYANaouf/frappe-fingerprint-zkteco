@@ -27,21 +27,21 @@
    "fieldname": "total_employees",
    "fieldtype": "Int",
    "in_list_view": 1,
-   "label": "Total Employés",
+   "label": "Total Employees",
    "read_only": 1
   },
   {
    "fieldname": "total_present",
    "fieldtype": "Int",
    "in_list_view": 1,
-   "label": "Présents",
+   "label": "Present",
    "read_only": 1
   },
   {
    "fieldname": "total_absent",
    "fieldtype": "Int",
    "in_list_view": 1,
-   "label": "Absents",
+   "label": "Absent",
    "read_only": 1
   },
   {
@@ -54,23 +54,23 @@
   {
    "fieldname": "section_details",
    "fieldtype": "Section Break",
-   "label": "Détail par Employé"
+   "label": "Employee Details"
   },
   {
    "fieldname": "details",
    "fieldtype": "Table",
-   "label": "Détails de Présence",
+   "label": "Attendance Details",
    "options": "Employee Attendance Detail"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-26 11:11:00.548582",
+ "modified": "2026-06-30 14:24:05.577444",
  "modified_by": "Administrator",
  "module": "zkteco fingerprint",
  "name": "Daily Attendance Report",
- "naming_rule": "Expression",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {
@@ -90,6 +90,5 @@
  "rows_threshold_for_grid_search": 20,
  "sort_field": "date",
  "sort_order": "DESC",
- "states": [],
- "track_changes": 0
+ "states": []
 }
